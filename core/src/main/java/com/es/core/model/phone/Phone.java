@@ -272,4 +272,37 @@ public class Phone {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                ", displaySizeInches=" + displaySizeInches +
+                ", weightGr=" + weightGr +
+                ", lengthMm=" + lengthMm +
+                ", widthMm=" + widthMm +
+                ", heightMm=" + heightMm +
+                ", announced=" + announced +
+                ", deviceType='" + deviceType + '\'' +
+                ", os='" + os + '\'' +
+                ", colors=" + colors +
+                ", displayResolution='" + displayResolution + '\'' +
+                ", pixelDensity=" + pixelDensity +
+                ", displayTechnology='" + displayTechnology + '\'' +
+                ", backCameraMegapixels=" + backCameraMegapixels +
+                ", frontCameraMegapixels=" + frontCameraMegapixels +
+                ", ramGb=" + ramGb +
+                ", internalStorageGb=" + internalStorageGb +
+                ", batteryCapacityMah=" + batteryCapacityMah +
+                ", talkTimeHours=" + talkTimeHours +
+                ", standByTimeHours=" + standByTimeHours +
+                ", bluetooth='" + bluetooth + '\'' +
+                ", positioning='" + positioning + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

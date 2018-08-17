@@ -4,6 +4,8 @@ import com.es.core.cart.CartService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -14,7 +16,9 @@ public class AjaxCartController {
     private CartService cartService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public void addPhone(Long phoneId, Long quantity) {
+    @ResponseBody
+    public void addPhone(@RequestParam ("phoneId") Long phoneId, @RequestParam("quantity") Long quantity) {
+        System.out.println(phoneId + " " + quantity);
         cartService.addPhone(phoneId, quantity);
     }
 }
