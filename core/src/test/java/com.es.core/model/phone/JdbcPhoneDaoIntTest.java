@@ -1,53 +1,33 @@
 package com.es.core.model.phone;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import com.es.core.model.phone.color.Color;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(locations = {"/context/applicationContext-core.xml"})
-@SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-                scripts = "/db/demodataTest.sql"),
-        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
-                scripts = "/db/deleteAfterTest.sql") })
-//@Transactional
+@ContextConfiguration(locations = {"/context/applicationContext-core.xml", "/context/applicationContext-test.xml"})
 public class JdbcPhoneDaoIntTest {
-    @Autowired
+    @Resource
     JdbcPhoneDao jdbcPhoneDao;
-
-    /*@BeforeClass
-    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            scripts = "/db/demodataTest.sql")
-    public static void init(){}
-
-    @AfterClass
-    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
-            scripts = "/db/deleteAfterTest.sql")
-    public static void destroy(){}*/
 
     @Test
     public void testFindAllSingleIdCheck(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 1);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 1, null);
         long id = resultPhones.get(0).getId();
         Assert.assertEquals(1000L, id);
     }
 
     @Test
     public void testFindAllMultIdCheck(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 3);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 3, null);
         List<Long> actualResult = new ArrayList<>();
         resultPhones.forEach(phone -> actualResult.add(phone.getId()));
         Assert.assertEquals(Stream.of(1000L, 1001L, 1002L)
@@ -56,19 +36,19 @@ public class JdbcPhoneDaoIntTest {
 
     @Test
     public void testFindAllEmpty(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 0);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 0, null);
         Assert.assertEquals(0, resultPhones.size());
     }
 
     @Test
     public void testFindAllCornerOffset(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(10, 0);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(10, 0, null);
         Assert.assertEquals(0, resultPhones.size());
     }
 
     @Test
     public void testFindAllSingleColorSingleCheck(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(2, 1);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(2, 1, null);
         List<String> actualResult = new ArrayList<>();
         resultPhones.forEach(phone -> phone.getColors().forEach(color -> actualResult.add(color.getCode())));
         Assert.assertEquals(Stream.of("Yellow").collect(Collectors.toList()), actualResult);
