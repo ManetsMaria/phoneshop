@@ -103,4 +103,20 @@ public class Order
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderItems=" + orderItems +
+                ", subtotal=" + subtotal +
+                ", deliveryPrice=" + deliveryPrice +
+                ", totalPrice=" + totalPrice +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", contactPhoneNo='" + contactPhoneNo + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }

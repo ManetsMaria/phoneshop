@@ -6,16 +6,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SpecificationConverterService {
-    private final int PRICE_INC = 0;
-    private final int BRAND_INC = 1;
-    private final int MODEL_INC = 2;
-    private final int SCREEN_INC = 3;
-    private final int PRICE_DEC = 4;
-    private final int BRAND_DEC = 5;
-    private final int MODEL_DEC = 6;
-    private final int SCREEN_DEC = 7;
+    private final String PRICE_INC = "price_inc";
+    private final String BRAND_INC = "brand_inc";
+    private final String MODEL_INC = "model_inc";
+    private final String SCREEN_INC = "screen_inc";
+    private final String PRICE_DEC = "price_dec";
+    private final String BRAND_DEC = "brand_dec";
+    private final String MODEL_DEC = "model_dec";
+    private final String SCREEN_DEC = "screen_dec";
 
-    public Specification getSpecificationById(int id){
+    public Specification getSpecificationById(String id){
+        if(id == null){
+            return null;
+        }
         switch (id){
             case PRICE_INC:
                 return new SpecificationSortByPriceInc();
@@ -45,35 +48,35 @@ public class SpecificationConverterService {
         return currentSpecification;
     }
 
-    public int getPRICE_INC() {
+    public String getPRICE_INC() {
         return PRICE_INC;
     }
 
-    public int getBRAND_INC() {
+    public String getBRAND_INC() {
         return BRAND_INC;
     }
 
-    public int getMODEL_INC() {
+    public String getMODEL_INC() {
         return MODEL_INC;
     }
 
-    public int getSCREEN_INC() {
+    public String getSCREEN_INC() {
         return SCREEN_INC;
     }
 
-    public int getPRICE_DEC() {
+    public String getPRICE_DEC() {
         return PRICE_DEC;
     }
 
-    public int getBRAND_DEC() {
+    public String getBRAND_DEC() {
         return BRAND_DEC;
     }
 
-    public int getMODEL_DEC() {
+    public String getMODEL_DEC() {
         return MODEL_DEC;
     }
 
-    public int getSCREEN_DEC() {
+    public String getSCREEN_DEC() {
         return SCREEN_DEC;
     }
 }

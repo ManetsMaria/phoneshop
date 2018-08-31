@@ -17,4 +17,5 @@ public interface PhoneDao {
     void setSearch(String search);
     String getSearch();
     List<Phone> getPhoneListById(Set<Long> setId);
+    void removeFromStock(Long phoneId, Long quantity);
 }

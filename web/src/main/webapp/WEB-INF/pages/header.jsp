@@ -21,15 +21,16 @@
 </head>
 <body>
 <p align="right"><a href="#">Login</a></p>
-<p align="right"><a href="./cart" ><button>my cart: <span id="quantity">${cartService.cart.quantity}</span> item <span id="summa">${cartService.cart.summa}</span> $</button></a>
+<p align="right"><a href="${pageContext.request.contextPath}/cart" ><button>my cart: <span id="quantity">${cartService.cart.quantity}</span> item <span id="summa">${cartService.cart.summa}</span> $</button></a>
 <h1>Phonify</h1>
 <p align="right"></p>
 </body>
 
 <script type="text/javascript">
-    function doAjax(idForm, id) {
+    function doAjax(idForm, id, idMistake) {
         var inputText = document.getElementById(idForm).value;
-        document.getElementById(idForm).value = '';
+        document.getElementById(idMistake).value = '';
+        <!-- document.getElementById(idForm).value = ''; -->
         $.ajax({
             url : 'ajaxCart',
             type: 'Post',
@@ -39,16 +40,15 @@
             }),
 
             success: function(data) {
-                var array = data.split(';', 3);
-                if (array[0] === 'true'){
-                    $('#quantity').html(array[1]);
-                    $('#summa').html(array[2]);
+                if (data.errorMessage === null){
+                    $('#quantity').html(data.quantity);
+                    $('#summa').html(data.summa);
                 }else{
-                    document.getElementById(idForm).value = 'unsuitable data';
+                    document.getElementById(idMistake).value = data.errorMessage;
                 }
             },
             error: function (data, e) {
-                alert(data + e);
+                <%-- document.getElementById(idMistake).value = 'empty input'; --%>
             }
         });
     }

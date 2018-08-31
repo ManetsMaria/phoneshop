@@ -2,10 +2,12 @@ package com.es.core.model.order;
 
 import com.es.core.model.phone.Phone;
 
+import java.math.BigDecimal;
+
 public class OrderItem {
     private Long id;
     private Phone phone;
-    private Order order;
+    private BigDecimal subtotal;
     private Long quantity;
 
     public Phone getPhone() {
@@ -16,19 +18,27 @@ public class OrderItem {
         this.phone = phone;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(final Order order) {
-        this.order = order;
-    }
-
     public Long getQuantity() {
         return quantity;
     }
 
     public void setQuantity(final Long quantity) {
         this.quantity = quantity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

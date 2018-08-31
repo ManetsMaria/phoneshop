@@ -15,12 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(locations = {"/context/applicationContext-core.xml"})
-@SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-                scripts = "/db/demodataTest.sql"),
-        @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
-                scripts = "/db/deleteAfterTest.sql") }) //it will be ok without this sql. But i do not change anything and it sees only this data
+@ContextConfiguration(locations = {"/context/applicationContext-core.xml", "/context/applicationContext-test.xml"})
 public class JdbcColorDaoIntTest {
     @Autowired
     JdbcColorDao jdbcColorDao;

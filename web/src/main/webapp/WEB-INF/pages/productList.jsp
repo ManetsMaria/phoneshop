@@ -10,6 +10,9 @@
     table{
         margin-top: 10px;
     }
+    input {
+        text-align: right;
+    }
 </style>
 <div align="right" >
     <form action="?" method="get" >
@@ -38,14 +41,21 @@
           <img src="https://raw.githubusercontent.com/andrewosipenko/phoneshop-ext-images/master/${phone.imageUrl}">
         </td>
         <td>${phone.brand}</td>
-          <td><a href="./productDetails?phoneId=${phone.id}">${phone.model}</a></td>
+          <td><a href="${pageContext.request.contextPath}/productDetails?phoneId=${phone.id}">${phone.model}</a></td>
         <td>$ ${phone.price}</td>
         <td><c:forEach var="color" items="${phone.colors}">
            <c:out value="${color.code}; "/>
         </c:forEach></td>
         <td>${phone.displaySizeInches}"</td>
-       <td><input type="text" id="quantity-form${phone.id}"></td>
-        <td><input type="button" onclick="doAjax('quantity-form${phone.id}', ${phone.id})" value="add to cart"> </td>
+      <td><input type="text" id="quantity-form${phone.id}" value="1"> <p>
+          <input type="text" id="mistake${phone.id}" style="border:none" width="10" height="10"> </p></td>
+        <td><input type="button" onclick="doAjax('quantity-form${phone.id}', ${phone.id}, 'mistake${phone.id}')" value="add to cart"> </td>
+        <%--  <form:form id="quantityForm" name="quantityForm" modelAttribute="cartFormItem" method="post" onsubmit="doAjax()">
+          <td><form:input path="quantity"/>
+              <%-- <form:errors path="this" element="div" cssClass="error"/>
+              <form:hidden path="phoneId"/></td>
+          <td><button type="submit">flagAdd</button></td>
+          </form:form> --%>
     </c:forEach>
   </tbody>
   </table>

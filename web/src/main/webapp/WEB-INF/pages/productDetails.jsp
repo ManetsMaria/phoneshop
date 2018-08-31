@@ -30,7 +30,7 @@
     </style>
 </head>
 <body>
-<a href="./productList" ><button>return to product list</button></a>
+<a href="${pageContext.request.contextPath}/productList" ><button>return to product list</button></a>
 <h2>${phone.model}</h2>
 <div align="left" class="layer1">
     <figure class="sign">
@@ -39,7 +39,8 @@
     </figure>
     <b>Price: </b>${phone.price}
     <p><input type="text" id="quantity-form" width="10">
-    <input type="button" onclick="doAjax('quantity-form', ${phone.id})" value="add to cart"> </p>
+    <input type="button" onclick="doAjax('quantity-form', ${phone.id}, 'error')" value="flagAdd to cart"> </p>
+    <input type="text" id="error" style="border:none" width="10" height="10">
 </div>
 <div align="center">
 <table>

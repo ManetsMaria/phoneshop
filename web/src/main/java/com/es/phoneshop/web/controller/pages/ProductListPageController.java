@@ -26,7 +26,7 @@ public class ProductListPageController {
     Specification current;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String showProductList(Model model, @RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int itemsOnPage, @RequestParam(required = false, defaultValue = "-1") int orderId, @RequestParam(required = false) String search) { //name doesn't matter
+    public String showProductList(Model model, @RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int itemsOnPage, @RequestParam(required = false) String orderId, @RequestParam(required = false) String search) { //name doesn't matter
         phoneDao.setSearch(search);
         int currentPage = Math.max(1, page);
         int pageCount = pageCounterService.calcPageCount(itemsOnPage);
@@ -36,6 +36,8 @@ public class ProductListPageController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("pageCount", pageCount);
         model.addAttribute("search", phoneDao.getSearch());
+        //quantityField.setQuantity(1L);
+        //model.addAttribute("quantityField", quantityField);
         /*String disabledNext = "";
         if ((phoneDao.findAll(currentPage*itemsOnPage, 1).isEmpty())) {
             disabledNext = "disabled";

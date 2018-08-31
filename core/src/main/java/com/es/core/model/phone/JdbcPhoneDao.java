@@ -20,10 +20,10 @@ public class JdbcPhoneDao implements PhoneDao{
 //    @Resource
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     @Autowired
     private BeanColorParsingRowMapper beanColorParsingRowMapper;
-
+    //@Autowired
+    @Resource
     private JdbcColorDao jdbcColorDao;
 
     private String search;
@@ -106,8 +106,10 @@ public class JdbcPhoneDao implements PhoneDao{
         return phones;
     }
 
-    @Resource
-    public void setJdbcColorDao(JdbcColorDao jdbcColorDao) {
-        this.jdbcColorDao = jdbcColorDao;
+    @Override
+    public void removeFromStock(Long phoneId, Long quantity) {
+        String query = "update stocks set stock=? where phoneId = ?";
+        int common = getStockByPhoneId(phoneId).get().getStock();
+        jdbcTemplate.update(query, common - quantity, phoneId);
     }
 }
