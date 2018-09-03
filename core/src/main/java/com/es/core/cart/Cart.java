@@ -21,16 +21,6 @@ public class Cart implements Serializable {
         phones = new HashMap<>();
     }
 
-    public void addPhone(Long phoneId, Long quantity, BigDecimal price){
-        if (!phones.containsKey(phoneId)){
-            phones.put(phoneId, 0L);
-        }
-        phones.put(phoneId, phones.get(phoneId) + quantity);
-        this.quantity += quantity;
-        price = price.multiply(new BigDecimal(quantity));
-        summa = summa.add(price);
-    }
-
     public BigDecimal getSumma() {
         return summa;
     }
@@ -76,5 +66,17 @@ public class Cart implements Serializable {
                 ", quantity=" + quantity +
                 ", phones=" + phones +
                 '}';
+    }
+
+    public void setSumma(BigDecimal summa) {
+        this.summa = summa;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setPhones(Map<Long, Long> phones) {
+        this.phones = phones;
     }
 }

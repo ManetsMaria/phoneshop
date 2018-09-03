@@ -28,7 +28,19 @@ public class HttpSessionCartService implements CartService {
         if (price == null){
             return;
         }
-        cart.addPhone(phoneId, quantity, price);
+        Map<Long, Long> phones = cart.getPhones();
+        Long q = cart.getQuantity();
+        BigDecimal summa = cart.getSumma();
+        if (!phones.containsKey(phoneId)){
+            phones.put(phoneId, 0L);
+        }
+        phones.put(phoneId, phones.get(phoneId) + quantity);
+        price = price.multiply(new BigDecimal(quantity));
+        summa = summa.add(price);
+        q += quantity;
+        cart.setPhones(phones);
+        cart.setSumma(summa);
+        cart.setQuantity(q);
     }
 
     @Override

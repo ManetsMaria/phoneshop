@@ -1,5 +1,9 @@
 package com.es.core.model.order;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,12 +21,28 @@ public class Order
      */
     private BigDecimal totalPrice;
 
+    @NotNull
+    @NotEmpty
     private String firstName;
+
+    @NotNull
+    @NotEmpty
     private String lastName;
+
+    @NotNull
+    @NotEmpty
     private String deliveryAddress;
+
+    @NotNull
+    @NotEmpty
+    @Pattern(regexp = "^[0-9\\-\\+]{9,15}$")
     private String contactPhoneNo;
 
     private OrderStatus status;
+
+    private String additionalInformation;
+
+    private boolean outOfStock;
 
     public Long getId() {
         return id;
@@ -118,5 +138,21 @@ public class Order
                 ", contactPhoneNo='" + contactPhoneNo + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    public String getAdditionalInformation() {
+        return additionalInformation;
+    }
+
+    public void setAdditionalInformation(String additionalInformation) {
+        this.additionalInformation = additionalInformation;
+    }
+
+    public boolean isOutOfStock() {
+        return outOfStock;
+    }
+
+    public void setOutOfStock(boolean outOfStock) {
+        this.outOfStock = outOfStock;
     }
 }

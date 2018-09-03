@@ -12,8 +12,8 @@
     <title>Order overview</title>
 </head>
 <body>
-<c:import url="header.jsp"/>
-<h2>Thank you for your order</h2>
+<c:import url="adminHeader.jsp"/>
+<h2>order status: ${order.status}</h2>
 <h3>Order number: ${order.id}</h3>
 <c:import url="orderTable.jsp"/>
 <p>
@@ -31,6 +31,8 @@
 <p>
     ${order.additionalInformation}
 </p>
-<a href="${pageContext.request.contextPath}/productList" ><button>back to shopping</button></a>
+<a href="${pageContext.request.contextPath}/admin/orders" ><button>back</button></a>
+<a href="${pageContext.request.contextPath}/admin/orderOverview?orderId=${order.id}&orderStatus=DELIVERED"><button>Delivered</button></a>
+<a href="${pageContext.request.contextPath}/admin/orderOverview?orderId=${order.id}&orderStatus=REJECTED"><button>Rejected</button></a>
 </body>
 </html>

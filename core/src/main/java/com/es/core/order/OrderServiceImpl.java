@@ -3,6 +3,7 @@ package com.es.core.order;
 import com.es.core.cart.Cart;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderItem;
+import com.es.core.model.order.OrderStatus;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.PhoneDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
-    PhoneDao phoneDao;
+    private PhoneDao phoneDao;
+
+    private Map<Long, Order> orders = new HashMap<>();
+    private long orderIndex = 1L;
 
     @Override
     public Order createOrder(Cart cart) {
@@ -51,6 +52,8 @@ public class OrderServiceImpl implements OrderService {
             phoneDao.removeFromStock(orderItem.getPhone().getId(), orderItem.getQuantity());
         }
         order.setId(getOrderId());
+        order.setStatus(OrderStatus.NEW);
+        orders.put(order.getId(), order);
     }
 
     private void setDelivery(Order order){
@@ -80,6 +83,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private long getOrderId(){
-        return 2L;
+        return orderIndex++;
+    }
+
+    @Override
+    public Map<Long, Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Map<Long, Order> orders) {
+        this.orders = orders;
+    }
+
+    @Override
+    public Order getOrderById(long id){
+        return orders.get(id);
     }
 }

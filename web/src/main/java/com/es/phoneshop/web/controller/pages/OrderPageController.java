@@ -27,27 +27,28 @@ public class OrderPageController {
     @Resource
     private CartService cartService;
 
-    private final String ORDER_FORM = "orderForm";
+    //private final String ORDER_FORM = "orderForm";
     private final String ORDER = "order";
 
     @RequestMapping(method = RequestMethod.GET)
-    public String getOrder(Model model, HttpSession session){
+    public String getOrder(Model model){
         Order order = orderService.createOrder(cartService.getCart());
-        model.addAttribute(ORDER_FORM, new OrderForm());
-        session.setAttribute(ORDER, order);
+        model.addAttribute(ORDER, order);
         return ORDER;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String placeOrder(@ModelAttribute(ORDER_FORM) @Valid OrderForm orderForm, BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes) {
+    public String placeOrder(@ModelAttribute(ORDER) @Valid Order order, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        //System.out.println(bindingResult.getModel());
         if(bindingResult.hasErrors()){
             return ORDER;
         }
-        //((Order)session.getAttribute(ORDER)).getOrderItems().get(0).setQuantity(100L);
+        //order.getOrderItems().get(1).setQuantity(100L);
         try {
-            orderService.placeOrder((Order)session.getAttribute(ORDER));
+            orderService.placeOrder(order);
             cartService.getCart().removeAll();
-            redirectAttributes.addFlashAttribute(ORDER_FORM, orderForm);
+            //redirectAttributes.addFlashAttribute(ORDER_FORM, orderForm);
+            redirectAttributes.addFlashAttribute(ORDER, order);
             return "redirect:/orderOverview";
         } catch (OutOfStockException e) {
             bindingResult.rejectValue("outOfStock", "outOfStock");
