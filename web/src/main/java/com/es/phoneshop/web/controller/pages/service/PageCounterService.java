@@ -9,9 +9,11 @@ import javax.annotation.Resource;
 public class PageCounterService {
     @Resource
     private PhoneDao phoneDao;
+    @Resource
+    private SearchConverterService searchConverterService;
 
     public int calcPageCount(int itemsOnPage){
-        int phoneNumberContainsOnStock = phoneDao.getPhoneNumberContainsOnStock();
+        int phoneNumberContainsOnStock = phoneDao.getPhoneNumberContainsOnStock(searchConverterService.constructSearch());
         int pageCount = phoneNumberContainsOnStock/itemsOnPage;
         if (phoneNumberContainsOnStock%itemsOnPage != 0){
             pageCount++;

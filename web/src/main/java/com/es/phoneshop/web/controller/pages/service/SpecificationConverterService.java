@@ -3,8 +3,10 @@ package com.es.phoneshop.web.controller.pages.service;
 import com.es.core.action.sort.Specification;
 import com.es.core.action.sort.imp.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.SessionScope;
 
 @Service
+@SessionScope
 public class SpecificationConverterService {
     private final String PRICE_INC = "price_inc";
     private final String BRAND_INC = "brand_inc";
@@ -14,6 +16,8 @@ public class SpecificationConverterService {
     private final String BRAND_DEC = "brand_dec";
     private final String MODEL_DEC = "model_dec";
     private final String SCREEN_DEC = "screen_dec";
+
+    private Specification specification;
 
     public Specification getSpecificationById(String id){
         if(id == null){
@@ -41,11 +45,10 @@ public class SpecificationConverterService {
         }
     }
 
-    public Specification getBestVariant(Specification currentSpecification, Specification getSpecification){
-        if (getSpecification != null){
-            return getSpecification;
+    public void setSpecification(Specification specification){
+        if (specification != null){
+            this.specification = specification;
         }
-        return currentSpecification;
     }
 
     public String getPRICE_INC() {
@@ -78,5 +81,9 @@ public class SpecificationConverterService {
 
     public String getSCREEN_DEC() {
         return SCREEN_DEC;
+    }
+
+    public Specification getSpecification() {
+        return specification;
     }
 }

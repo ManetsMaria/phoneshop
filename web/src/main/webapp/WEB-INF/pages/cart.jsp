@@ -54,10 +54,7 @@
                 <form:hidden path="cartFormItems[${status.index}].phoneId"/>
             </td>
             <td>
-                <form method="post" action="${pageContext.request.contextPath}/cart/delete" id="deleteForm" name="deleteForm">
-                    <input type="hidden" name="id" value="${phone.id}">
-                    <input name="delete" type="submit" value="delete" id="deleteButton">
-                </form>
+                <button  onclick="deleteCart(${phone.id})">Delete</button>
             </td>
             </c:forEach>
         </tbody>
@@ -66,8 +63,16 @@
 <div align="right">
 <button  onclick="updateCart()">Update</button>
     <a href="${pageContext.request.contextPath}/order"><button >Order</button></a></div>
+<form method="post" action="${pageContext.request.contextPath}/cart/delete" id="deleteForm" name="deleteForm">
+    <input type="hidden" name="id" id="id">
+</form>
 </body>
 <script>var updateCart = function() {
     $('#cartForm').submit();
-};</script>
+};
+var deleteCart = function(id) {
+    document.getElementById('id').value = id;
+    $('#deleteForm').submit();
+};
+</script>
 </html>

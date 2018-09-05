@@ -1,45 +1,31 @@
 package com.es.phoneshop.web.controller.pages.service;
 
+import com.es.core.model.stock.StockService;
 import validation.cart.CartForm;
 import validation.cart.CartFormItem;
-import com.es.core.cart.Cart;
-import com.es.core.cart.CartService;
-import com.es.core.model.phone.PhoneDao;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import javax.annotation.Resource;
 
 @Service
-public class OutOfStockValidationService {
+public class OutOfStockValidationInputService {
 
     @Resource
-    CartService cartService;
-    @Resource
-    PhoneDao phoneDao;
+    private StockService stockService;
 
     public boolean validAddInput(Long phoneId, Long quantity){
         if (quantity == null || phoneId == null){
             return false;
         }
-        int commonQuantity = phoneDao.getStockByPhoneId(phoneId).get().getStock();
-        Cart cart = cartService.getCart();
-        Long currentQuantity = cart.getPhoneQuantity(phoneId);
-        if(currentQuantity + quantity > commonQuantity){
-            return false;
-        }
-        return true;
+        return stockService.checkAdd(phoneId, quantity);
     }
 
     public boolean validUpdateInput(Long phoneId, Long quantity){
         if (quantity == null || phoneId == null){
             return false;
         }
-        int commonQuantity = phoneDao.getStockByPhoneId(phoneId).get().getStock();
-        if (quantity > commonQuantity){
-            return false;
-        }
-        return true;
+        return stockService.checkUpdate(phoneId, quantity);
     }
 
     public boolean validUpdateInput(CartForm cartForm, BindingResult bindingResult){

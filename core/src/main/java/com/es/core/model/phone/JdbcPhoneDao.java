@@ -1,8 +1,9 @@
 package com.es.core.model.phone;
 
-import com.es.core.model.phone.color.Color;
-import com.es.core.model.phone.color.JdbcColorDao;
+import com.es.core.model.color.Color;
+import com.es.core.model.color.JdbcColorDao;
 import com.es.core.action.sort.Specification;
+import com.es.core.model.stock.Stock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,12 +42,12 @@ public class JdbcPhoneDao implements PhoneDao{
         throw new UnsupportedOperationException("TODO");
     }
 
-    public List<Phone> findAll(int offset, int limit, Specification sortCriteria) {
+    public List<Phone> findAll(int offset, int limit, Specification sortCriteria, String search) {
         String order = "";
         if (sortCriteria != null){
             order = sortCriteria.sqlOrderBy();
         }
-        return jdbcTemplate.query("select phones.* from (phones inner join stocks on id = phoneId) where (stock > 0 AND price is not null"+consructSearch()+")"+order+" offset " + offset + " limit " + limit, beanColorParsingRowMapper);
+        return jdbcTemplate.query("select phones.* from (phones inner join stocks on id = phoneId) where (stock > 0 AND price is not null"+search+")"+order+" offset " + offset + " limit " + limit, beanColorParsingRowMapper);
     }
 
     @Override
@@ -57,8 +58,8 @@ public class JdbcPhoneDao implements PhoneDao{
     }
 
     @Override
-    public int getPhoneNumberContainsOnStock() {
-        String sql = "select Count(phones.*) from (phones inner join stocks on id = phoneId) where (stock > 0 and price is not null"+consructSearch()+")";
+    public int getPhoneNumberContainsOnStock(String search) {
+        String sql = "select Count(phones.*) from (phones inner join stocks on id = phoneId) where (stock > 0 and price is not null"+search+")";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
@@ -67,28 +68,6 @@ public class JdbcPhoneDao implements PhoneDao{
         String sql = "select * from stocks where phoneId = ?";
         Stock stock = jdbcTemplate.queryForObject(sql, new Object[] { phoneId }, new BeanPropertyRowMapper<>(Stock.class));
         return Optional.of(stock);
-    }
-
-    private String consructSearch(){
-        if (search == null || search.isEmpty()){
-            return "";
-        }
-        return " and (brand='"+search+"' or model='"+search+"')";
-    }
-
-    @Override
-    public void setSearch(String search) {
-        if (search != null){
-            this.search = search;
-        }
-    }
-
-    @Override
-    public String getSearch() {
-        if (search == null){
-            return "";
-        }
-        return search;
     }
 
     @Override
@@ -107,9 +86,8 @@ public class JdbcPhoneDao implements PhoneDao{
     }
 
     @Override
-    public void removeFromStock(Long phoneId, Long quantity) {
+    public void updateStock(Long phoneId, Long quantity) {
         String query = "update stocks set stock=? where phoneId = ?";
-        int common = getStockByPhoneId(phoneId).get().getStock();
-        jdbcTemplate.update(query, common - quantity, phoneId);
+        jdbcTemplate.update(query, quantity, phoneId);
     }
 }

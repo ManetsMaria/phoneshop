@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import com.es.core.action.sort.Specification;
 import com.es.phoneshop.web.controller.pages.service.PageCounterService;
+import com.es.phoneshop.web.controller.pages.service.SearchConverterService;
 import com.es.phoneshop.web.controller.pages.service.SpecificationConverterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,20 +23,20 @@ public class ProductListPageController {
     private PageCounterService pageCounterService;
     @Resource
     private SpecificationConverterService specificationConverterService;
-
-    Specification current;
+    @Resource
+    private SearchConverterService searchConverterService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String showProductList(Model model, @RequestParam(required = false, defaultValue = "1") int page, @RequestParam(required = false, defaultValue = "10") int itemsOnPage, @RequestParam(required = false) String orderId, @RequestParam(required = false) String search) { //name doesn't matter
-        phoneDao.setSearch(search);
+        searchConverterService.setSearch(search);
+        specificationConverterService.setSpecification(specificationConverterService.getSpecificationById(orderId));
         int currentPage = Math.max(1, page);
         int pageCount = pageCounterService.calcPageCount(itemsOnPage);
         currentPage = Math.min(pageCount, currentPage);
-        current = specificationConverterService.getBestVariant(current, specificationConverterService.getSpecificationById(orderId));
-        model.addAttribute("phones", phoneDao.findAll((currentPage - 1)*itemsOnPage, itemsOnPage, current));
+        model.addAttribute("phones", phoneDao.findAll((currentPage - 1)*itemsOnPage, itemsOnPage, specificationConverterService.getSpecification(), searchConverterService.constructSearch()));
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("pageCount", pageCount);
-        model.addAttribute("search", phoneDao.getSearch());
+        model.addAttribute("search", searchConverterService.getSearch());
         //quantityField.setQuantity(1L);
         //model.addAttribute("quantityField", quantityField);
         /*String disabledNext = "";

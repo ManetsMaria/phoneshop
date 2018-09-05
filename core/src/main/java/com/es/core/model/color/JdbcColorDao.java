@@ -1,4 +1,4 @@
-package com.es.core.model.phone.color;
+package com.es.core.model.color;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

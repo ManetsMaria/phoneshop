@@ -2,9 +2,8 @@ package com.es.phoneshop.web.controller.pages;
 
 import validation.cart.CartForm;
 import com.es.core.cart.CartService;
-import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.PhoneDao;
-import com.es.phoneshop.web.controller.pages.service.OutOfStockValidationService;
+import com.es.phoneshop.web.controller.pages.service.OutOfStockValidationInputService;
 import com.es.phoneshop.web.controller.pages.service.QuantityListConverterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/cart")
@@ -25,16 +23,16 @@ public class CartPageController {
     @Resource
     private QuantityListConverterService quantityListConverterService;
     @Resource
-    private OutOfStockValidationService outOfStockValidationService;
+    private OutOfStockValidationInputService outOfStockValidationInputService;
 
     private final String PHONES = "phones";
     private final String CART_FORM = "cartForm";
 
     @RequestMapping(method = RequestMethod.GET)
     public String getCart(Model model) {
-        List<Phone> phones = phoneDao.getPhoneListById(cartService.getCart().getPhones().keySet());
-        CartForm cartForm = quantityListConverterService.getQuantityFieldsByPhoneList(phones);
-        model.addAttribute(PHONES, phones);
+        System.out.println(cartService.getCart());
+        CartForm cartForm = quantityListConverterService.getQuantityFieldsByPhoneList(cartService.getCart());
+        model.addAttribute(PHONES, phoneDao.getPhoneListById(cartService.getCart().getPhones().keySet()));
         model.addAttribute(this.CART_FORM, cartForm);
         return "cart";
     }
@@ -43,7 +41,7 @@ public class CartPageController {
     public String updateCart(@ModelAttribute(CART_FORM) @Valid CartForm cartForm,
                              BindingResult bindingResult,
                              Model model) {
-        if (bindingResult.hasErrors() || !outOfStockValidationService.validUpdateInput(cartForm, bindingResult)) {
+        if (bindingResult.hasErrors() || !outOfStockValidationInputService.validUpdateInput(cartForm, bindingResult)) {
             model.addAttribute(PHONES, phoneDao.getPhoneListById(cartService.getCart().getPhones().keySet()));
             return "cart";
         }
@@ -53,7 +51,9 @@ public class CartPageController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/delete")
     public String deleteItemFromCart(long id) {
+        System.out.println(id);
         cartService.remove(id);
+        System.out.println(cartService.getCart());
         return "redirect:/cart";
     }
 }

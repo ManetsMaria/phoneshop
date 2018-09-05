@@ -1,9 +1,8 @@
 package com.es.core.model.phone;
 
-import com.es.core.model.phone.color.Color;
+import com.es.core.model.color.Color;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,14 +19,14 @@ public class JdbcPhoneDaoIntTest {
 
     @Test
     public void testFindAllSingleIdCheck(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 1, null);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 1, null, "");
         long id = resultPhones.get(0).getId();
         Assert.assertEquals(1000L, id);
     }
 
     @Test
     public void testFindAllMultIdCheck(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 3, null);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 3, null, "");
         List<Long> actualResult = new ArrayList<>();
         resultPhones.forEach(phone -> actualResult.add(phone.getId()));
         Assert.assertEquals(Stream.of(1000L, 1001L, 1002L)
@@ -36,19 +35,19 @@ public class JdbcPhoneDaoIntTest {
 
     @Test
     public void testFindAllEmpty(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 0, null);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(0, 0, null, "");
         Assert.assertEquals(0, resultPhones.size());
     }
 
     @Test
     public void testFindAllCornerOffset(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(10, 0, null);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(10, 0, null, "");
         Assert.assertEquals(0, resultPhones.size());
     }
 
     @Test
     public void testFindAllSingleColorSingleCheck(){
-        List<Phone> resultPhones = jdbcPhoneDao.findAll(2, 1, null);
+        List<Phone> resultPhones = jdbcPhoneDao.findAll(2, 1, null, "");
         List<String> actualResult = new ArrayList<>();
         resultPhones.forEach(phone -> phone.getColors().forEach(color -> actualResult.add(color.getCode())));
         Assert.assertEquals(Stream.of("Yellow").collect(Collectors.toList()), actualResult);

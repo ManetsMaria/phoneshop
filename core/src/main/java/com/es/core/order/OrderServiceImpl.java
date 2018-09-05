@@ -6,13 +6,11 @@ import com.es.core.model.order.OrderItem;
 import com.es.core.model.order.OrderStatus;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.PhoneDao;
+import com.es.core.model.stock.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -20,6 +18,10 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private PhoneDao phoneDao;
+    @Autowired
+    private DeliveryService deliveryService;
+    @Resource
+    private StockService stockService;
 
     private Map<Long, Order> orders = new HashMap<>();
     private long orderIndex = 1L;
@@ -27,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Cart cart) {
         Order order = new Order();
-        setDelivery(order);
+        order.setDeliveryPrice(deliveryService.getDelivery());
         order.setSubtotal(cart.getSumma());
         BigDecimal total = order.getDeliveryPrice().add(order.getSubtotal());
         order.setTotalPrice(total);
@@ -49,35 +51,24 @@ public class OrderServiceImpl implements OrderService {
     public void placeOrder(Order order) throws OutOfStockException {
         checkStock(order);
         for(OrderItem orderItem: order.getOrderItems()){
-            phoneDao.removeFromStock(orderItem.getPhone().getId(), orderItem.getQuantity());
+            stockService.removeFromStock(orderItem.getPhone().getId(), orderItem.getQuantity());
         }
         order.setId(getOrderId());
         order.setStatus(OrderStatus.NEW);
         orders.put(order.getId(), order);
     }
 
-    private void setDelivery(Order order){
-        Resource resource = new ClassPathResource("/order.properties");
-        try {
-            Properties props = PropertiesLoaderUtils.loadProperties(resource);
-            order.setDeliveryPrice(new BigDecimal(props.getProperty("delivery.price")));
-        } catch (IOException | NumberFormatException e) {
-            order.setDeliveryPrice(new BigDecimal(0));
-        }
-    }
-
     private void checkStock(Order order) throws OutOfStockException {
-        boolean flag = true;
-        for(int i = 0; i < order.getOrderItems().size(); i++){
-            OrderItem orderItem = order.getOrderItems().get(i);
-            int commonQuantity = phoneDao.getStockByPhoneId(orderItem.getPhone().getId()).get().getStock();
-            if (orderItem.getQuantity() > commonQuantity){
-                flag = false;
-                order.getOrderItems().remove(i);
-                i--;
+        boolean isRemove = false;
+        Iterator<OrderItem> itr = order.getOrderItems().iterator();
+        while(itr.hasNext()){
+            OrderItem orderItem = itr.next();
+            if(!stockService.checkUpdate(orderItem.getPhone().getId(), orderItem.getQuantity())){
+               isRemove = true;
+               itr.remove();
             }
         }
-        if(!flag){
+        if(isRemove){
             throw new OutOfStockException();
         }
     }

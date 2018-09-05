@@ -1,5 +1,6 @@
 package com.es.phoneshop.web.controller.pages.service;
 
+import com.es.core.cart.Cart;
 import validation.cart.CartForm;
 import com.es.core.cart.CartService;
 import com.es.core.model.phone.Phone;
@@ -15,9 +16,9 @@ public class QuantityListConverterService {
     @Resource
     private CartService cartService;
 
-    public CartForm getQuantityFieldsByPhoneList(List<Phone> phones){
+    public CartForm getQuantityFieldsByPhoneList(Cart cart){
         CartForm cartForm = new CartForm();
-        phones.forEach(phone -> cartForm.addQuantityField(phone.getId(), cartService.getCart().getPhoneQuantity(phone.getId())));
+        cart.getPhones().forEach((phone, quantity) -> cartForm.addQuantityField(phone, quantity));
         return cartForm;
     }
 

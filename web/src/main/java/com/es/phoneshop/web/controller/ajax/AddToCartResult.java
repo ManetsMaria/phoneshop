@@ -2,7 +2,7 @@ package com.es.phoneshop.web.controller.ajax;
 
 import java.math.BigDecimal;
 
-public class AjaxReturnEntity {
+public class AddToCartResult {
     private Long quantity;
     private BigDecimal summa;
     private String errorMessage;

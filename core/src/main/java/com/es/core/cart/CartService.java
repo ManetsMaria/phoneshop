@@ -18,4 +18,6 @@ public interface CartService {
     void remove(Long phoneId);
 
     boolean checkCart();
+
+    void removeAll();
 }

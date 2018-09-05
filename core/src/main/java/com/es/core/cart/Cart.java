@@ -1,6 +1,8 @@
 package com.es.core.cart;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 
 import javax.validation.constraints.Min;
 import java.io.Serializable;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@SessionScope
 public class Cart implements Serializable {
     private BigDecimal summa;
     private long quantity;
@@ -40,23 +43,6 @@ public class Cart implements Serializable {
             return 0L;
         }
         return quantity;
-    }
-
-    public void removePhone(long phoneId, BigDecimal price){
-        if (!phones.containsKey(phoneId)){
-            return;
-        }
-        long quantity = phones.get(phoneId);
-        price = price.multiply(new BigDecimal(quantity));
-        summa = summa.subtract(price);
-        this.quantity -= quantity;
-        phones.remove(phoneId);
-    }
-
-    public void removeAll(){
-        summa = new BigDecimal(0);
-        quantity = 0L;
-        phones = new HashMap<>();
     }
 
     @Override

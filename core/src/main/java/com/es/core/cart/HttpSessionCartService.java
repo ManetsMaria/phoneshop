@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,40 +25,34 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addPhone(Long phoneId, Long quantity) {
-        BigDecimal price = getPrice(phoneId);
-        if (price == null){
-            return;
-        }
         Map<Long, Long> phones = cart.getPhones();
-        Long q = cart.getQuantity();
-        BigDecimal summa = cart.getSumma();
-        if (!phones.containsKey(phoneId)){
-            phones.put(phoneId, 0L);
+        Long currentQuantity = phones.get(phoneId);
+        if(currentQuantity == null){
+            phones.put(phoneId, quantity);
+        }else{
+            phones.put(phoneId, quantity + currentQuantity);
         }
-        phones.put(phoneId, phones.get(phoneId) + quantity);
-        price = price.multiply(new BigDecimal(quantity));
-        summa = summa.add(price);
-        q += quantity;
         cart.setPhones(phones);
-        cart.setSumma(summa);
-        cart.setQuantity(q);
+        reCalcCart();
     }
 
     @Override
     public void update(Map<Long, Long> items) {
-        cart.removeAll();
+        removeAll();
         for(Map.Entry<Long, Long> entry: items.entrySet()){
-          addPhone(entry.getKey(), entry.getValue());
+          this.addPhone(entry.getKey(), entry.getValue());
         }
     }
 
     @Override
     public void remove(Long phoneId) {
-        BigDecimal price = getPrice(phoneId);
-        /*if (price == null){
+        Map<Long, Long> phones = cart.getPhones();
+        if (!phones.containsKey(phoneId)){
             return;
-        }*/ //   !!!!
-        cart.removePhone(phoneId, price);
+        }
+        phones.remove(phoneId);
+        cart.setPhones(phones);
+        reCalcCart();
     }
 
     private BigDecimal getPrice(long phoneId){
@@ -80,14 +75,39 @@ public class HttpSessionCartService implements CartService {
     @Override
     public boolean checkCart(){
         boolean flag = true;
-        for(Map.Entry<Long, Long> e:cart.getPhones().entrySet()){
+        for(Map.Entry<Long, Long> e: cart.getPhones().entrySet()){
             int commonQuantity = phoneDao.getStockByPhoneId(e.getKey()).get().getStock();
             if (e.getValue() > commonQuantity){
                 flag = false;
-                cart.removePhone(e.getKey(), getPrice(e.getKey()));
+                remove(e.getKey());
             }
         }
         return flag;
     }
 
+    @Override
+    public void removeAll() {
+        cart.setQuantity(0);
+        cart.setSumma(new BigDecimal(0));
+        cart.setPhones(new HashMap<>());
+    }
+
+    private void reCalcCart(){
+        Map<Long, Long> phones = cart.getPhones();
+        Long q = 0L;
+        BigDecimal summa = new BigDecimal(0);
+        for(Map.Entry<Long, Long> e: phones.entrySet()){
+            if(checkPricePresent(e.getKey())) {
+                q += e.getValue();
+                summa = summa.add(getPrice(e.getKey()).multiply(new BigDecimal(e.getValue())));
+            }
+        }
+        cart.setSumma(summa);
+        cart.setQuantity(q);
+    }
+
+    private boolean checkPricePresent(Long phoneId){
+        BigDecimal price = getPrice(phoneId);
+        return price != null;
+    }
 }
