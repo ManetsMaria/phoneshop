@@ -47,14 +47,10 @@
     <c:forEach var="orderItem" items="${order.orderItems}" varStatus="status">
     <form:hidden path="orderItems[${status.index}].phone.brand"/>
     <form:hidden path="orderItems[${status.index}].phone.model"/>
-    <form:hidden path="orderItems[${status.index}].phone.price"/>
     <form:hidden path="orderItems[${status.index}].phone.displaySizeInches"/>
     <form:hidden path="orderItems[${status.index}].quantity"/>
     <form:hidden path="orderItems[${status.index}].subtotal"/>
     <form:hidden path="orderItems[${status.index}].phone.id"/>
-    <form:hidden path="subtotal"/>
-    <form:hidden path="deliveryPrice"/>
-    <form:hidden path="totalPrice"/>
       <%--  <c:forEach var="color" items="${orderItem.phone.colors}" varStatus="statusColor">
             <form:hidden path="orderItems[${status.index}].phone.colors[${statusColor.index}].code"/>
         </c:forEach> --%>

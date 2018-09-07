@@ -15,24 +15,25 @@ public class OutOfStockValidationInputService {
     private StockService stockService;
 
     public boolean validAddInput(Long phoneId, Long quantity){
-        if (quantity == null || phoneId == null){
+        /*if (quantity == null || phoneId == null){
             return false;
-        }
+        }*/
         return stockService.checkAdd(phoneId, quantity);
     }
 
-    public boolean validUpdateInput(Long phoneId, Long quantity){
-        if (quantity == null || phoneId == null){
+    private boolean validUpdateInput(Long phoneId, Long quantity){
+        /*if (quantity == null || phoneId == null){
             return false;
         }
-        return stockService.checkUpdate(phoneId, quantity);
+        return stockService.checkUpdate(phoneId, quantity); */
+        return !(quantity == null || phoneId == null);
     }
 
     public boolean validUpdateInput(CartForm cartForm, BindingResult bindingResult){
         boolean flag = true;
         for(int i = 0; i < cartForm.getCartFormItems().size(); i++){
             CartFormItem cartFormItem = cartForm.getCartFormItems().get(i);
-            if(!validUpdateInput(cartFormItem.getPhoneId(), cartFormItem.getQuantity())){
+            if(validUpdateInput(cartFormItem.getPhoneId(), cartFormItem.getQuantity()) && !stockService.checkUpdate(cartFormItem.getPhoneId(), cartFormItem.getQuantity())){
                 bindingResult.rejectValue("cartFormItems["+i+"].quantity", "out.of.stock");
                 flag = false;
             }

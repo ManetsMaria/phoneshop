@@ -1,5 +1,7 @@
 package com.es.phoneshop.web.controller.pages;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import validation.cart.CartForm;
 import com.es.core.cart.CartService;
 import com.es.core.model.phone.PhoneDao;
@@ -27,10 +29,10 @@ public class CartPageController {
 
     private final String PHONES = "phones";
     private final String CART_FORM = "cartForm";
+    private final String UPDATE_SUCCESSFULLY = "updateSuccessfully";
 
     @RequestMapping(method = RequestMethod.GET)
-    public String getCart(Model model) {
-        System.out.println(cartService.getCart());
+    public String getCart(Model model, @ModelAttribute(UPDATE_SUCCESSFULLY) String str) {
         CartForm cartForm = quantityListConverterService.getQuantityFieldsByPhoneList(cartService.getCart());
         model.addAttribute(PHONES, phoneDao.getPhoneListById(cartService.getCart().getPhones().keySet()));
         model.addAttribute(this.CART_FORM, cartForm);
@@ -40,20 +42,22 @@ public class CartPageController {
     @RequestMapping(method = RequestMethod.POST)
     public String updateCart(@ModelAttribute(CART_FORM) @Valid CartForm cartForm,
                              BindingResult bindingResult,
-                             Model model) {
-        if (bindingResult.hasErrors() || !outOfStockValidationInputService.validUpdateInput(cartForm, bindingResult)) {
+                             Model model, RedirectAttributes redirectAttributes) {
+        boolean isOutOfStock = !outOfStockValidationInputService.validUpdateInput(cartForm, bindingResult);
+        if (bindingResult.hasErrors() || isOutOfStock) {
             model.addAttribute(PHONES, phoneDao.getPhoneListById(cartService.getCart().getPhones().keySet()));
             return "cart";
         }
         cartService.update(quantityListConverterService.getMapByQuantityFields(cartForm));
+        //model.addAttribute("updateSuccessfully","update successfully");
+        //return getCart(model);
+        redirectAttributes.addFlashAttribute(UPDATE_SUCCESSFULLY, "update successfully");
         return "redirect:/cart";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/delete")
     public String deleteItemFromCart(long id) {
-        System.out.println(id);
         cartService.remove(id);
-        System.out.println(cartService.getCart());
         return "redirect:/cart";
     }
 }

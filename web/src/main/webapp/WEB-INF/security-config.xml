@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.springframework.org/schema/security"
+         xsi:schemaLocation="
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <http> <!-- Это сокращенный синтаксис, отвечает за установку логина на основе веб-формы, базовый логин и выход из приложения -->
+        <intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')"/> <!-- Задает шаблон, с которым сравниваются URL-адреа входящих запросов, тоесть что бы попасть в любой файл(так как у нас в pattern="/") нам нужно иметь доступ админа -->
+        <form-login login-page="/login" default-target-url="/admin/orders"
+                    authentication-failure-url="/loginError" />
+        <logout logout-success-url="/productList" logout-url="/logout" />
+        <csrf disabled="true" /> <!-- без него не переходит на ошибку, но отвечает на межсайтовую пооделку запроса ?????! -->
+    </http>
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="admin" password="admin" authorities="ROLE_ADMIN"/> <!-- Добавляем пользователя который будет иметь права админа -->
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+</b:beans>

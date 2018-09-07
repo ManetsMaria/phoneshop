@@ -19,7 +19,7 @@
     <title>Phonify</title>
 </head>
 <body>
-<p align="right"><a href="${pageContext.request.contextPath}/productList">Logout</a></p>
+<p align="right">admin <a href="${pageContext.request.contextPath}/logout">Logout</a></p>
 <h1>Phonify</h1>
 <p align="right"></p>
 </body>

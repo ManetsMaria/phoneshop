@@ -25,8 +25,12 @@
 <h2>Cart</h2>
 <a href="${pageContext.request.contextPath}/productList" ><button>return to product list</button></a>
 <div align="right"><a href="${pageContext.request.contextPath}/order"><button >Order</button></a></div>
+${updateSuccessfully}
+<table align="center">
 <form:form method="post" modelAttribute="cartForm" id="cartForm">
-    <table border="1px" align="center">
+    <tr>
+        <td>
+    <table border="1px">
         <thead>
         <tr>
             <td>Brand </td>
@@ -54,7 +58,7 @@
                 <form:hidden path="cartFormItems[${status.index}].phoneId"/>
             </td>
             <td>
-                <button  onclick="deleteCart(${phone.id})">Delete</button>
+                <button form="deleteForm" onclick="deleteCart(${phone.id})">Delete</button>
             </td>
             </c:forEach>
         </tbody>

@@ -40,6 +40,7 @@ public class OrderPageController {
     public String placeOrder(@ModelAttribute(ORDER) @Valid Order order, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         //System.out.println(bindingResult.getModel());
         fillUnknowOrderFieldsService.fillPhoneColors(order);
+        fillUnknowOrderFieldsService.fillPrices(order);
         if(bindingResult.hasErrors()){
             return ORDER;
         }
