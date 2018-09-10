@@ -7,6 +7,7 @@ import com.es.core.model.order.OrderStatus;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.PhoneDao;
 import com.es.core.model.stock.StockService;
+import com.es.core.cart.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class OrderServiceImpl implements OrderService {
     private DeliveryService deliveryService;
     @Resource
     private StockService stockService;
+    @Resource
+    private CartService cartService;
 
     private Map<Long, Order> orders = new HashMap<>();
     private long orderIndex = 1L;
@@ -69,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         if(isRemove){
+            cartService.checkCart();
             throw new OutOfStockException();
         }
     }

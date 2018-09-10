@@ -5,6 +5,7 @@ import com.es.core.model.order.Order;
 import com.es.core.order.OrderService;
 import com.es.core.order.OutOfStockException;
 import com.es.phoneshop.web.controller.pages.service.FillUnknowOrderFieldsService;
+import validation.order.OrderForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,26 +27,30 @@ public class OrderPageController {
     @Resource
     private FillUnknowOrderFieldsService fillUnknowOrderFieldsService;
 
-    //private final String ORDER_FORM = "orderForm";
+    private final String ORDER_FORM = "orderForm";
     private final String ORDER = "order";
 
     @RequestMapping(method = RequestMethod.GET)
     public String getOrder(Model model){
         Order order = orderService.createOrder(cartService.getCart());
         model.addAttribute(ORDER, order);
+        model.addAttribute(ORDER_FORM, new OrderForm());
         return ORDER;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String placeOrder(@ModelAttribute(ORDER) @Valid Order order, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String placeOrder(@ModelAttribute(ORDER_FORM) @Valid OrderForm orderForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         //System.out.println(bindingResult.getModel());
-        fillUnknowOrderFieldsService.fillPhoneColors(order);
-        fillUnknowOrderFieldsService.fillPrices(order);
+        //fillUnknowOrderFieldsService.fillPhoneColors(order);
+        //fillUnknowOrderFieldsService.fillPrices(order);
+        Order order = orderService.createOrder(cartService.getCart());
+        model.addAttribute(ORDER, order);
         if(bindingResult.hasErrors()){
             return ORDER;
         }
         //order.getOrderItems().get(1).setQuantity(100L);
         try {
+            fillUnknowOrderFieldsService.fillOrderFormFields(order, orderForm);
             orderService.placeOrder(order);
             cartService.removeAll();
             //redirectAttributes.addFlashAttribute(ORDER_FORM, orderForm);

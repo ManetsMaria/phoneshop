@@ -5,6 +5,7 @@ import com.es.core.model.order.OrderItem;
 import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.PhoneDao;
 import com.es.core.order.DeliveryService;
+import validation.order.OrderForm;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,5 +37,12 @@ public class FillUnknowOrderFieldsService {
         }
         order.setSubtotal(subTotal);
         order.setTotalPrice(subTotal.add(delivery));
+    }
+
+    public void fillOrderFormFields(Order order, OrderForm orderForm){
+        order.setFirstName(orderForm.getFirstName());
+        order.setLastName(orderForm.getLastName());
+        order.setDeliveryAddress(orderForm.getAddress());
+        order.setContactPhoneNo(orderForm.getPhone());
     }
 }
