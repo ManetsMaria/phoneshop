@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: masha
@@ -21,7 +22,7 @@
 </head>
 <body>
 <p align="right"><a href="${pageContext.request.contextPath}/admin/orders">Login</a></p>
-<p align="right"><a href="${pageContext.request.contextPath}/cart" ><button>my cart: <span id="quantity">${cartService.cart.quantity}</span> item <span id="summa">${cartService.cart.summa}</span> $</button></a>
+<p align="right"><a href="${pageContext.request.contextPath}/cart" ><button>my cart: <span id="quantity">${quantity}</span> item <span id="summa">${cartService.cart.summa}</span> $</button></a>
 <h1>Phonify</h1>
 <p align="right"></p>
 </body>

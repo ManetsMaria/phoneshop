@@ -1,6 +1,7 @@
 package com.es.core.order;
 
 import com.es.core.cart.Cart;
+import com.es.core.cart.CartService;
 import com.es.core.model.order.Order;
 import com.es.core.model.order.OrderItem;
 import com.es.core.model.order.OrderStatus;
@@ -16,12 +17,14 @@ import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
+    @Resource
     private PhoneDao phoneDao;
-    @Autowired
+    @Resource
     private DeliveryService deliveryService;
     @Resource
     private StockService stockService;
+    @Resource
+    private CartService cartService;
 
     private Map<Long, Order> orders = new HashMap<>();
     private long orderIndex = 1L;
@@ -69,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         if(isRemove){
+            cartService.checkCart();
             throw new OutOfStockException();
         }
     }

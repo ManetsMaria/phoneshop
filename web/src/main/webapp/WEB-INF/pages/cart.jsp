@@ -68,14 +68,14 @@ ${updateSuccessfully}
 <button  onclick="updateCart()">Update</button>
     <a href="${pageContext.request.contextPath}/order"><button >Order</button></a></div>
 <form method="post" action="${pageContext.request.contextPath}/cart/delete" id="deleteForm" name="deleteForm">
-    <input type="hidden" name="id" id="id">
+    <input type="hidden" name="id" id="phoneId">
 </form>
 </body>
 <script>var updateCart = function() {
     $('#cartForm').submit();
 };
 var deleteCart = function(id) {
-    document.getElementById('id').value = id;
+    document.getElementById('phoneId').value = id;
     $('#deleteForm').submit();
 };
 </script>

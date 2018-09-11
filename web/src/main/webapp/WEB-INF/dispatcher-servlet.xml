@@ -22,7 +22,7 @@
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/pages/" />
         <property name="suffix" value=".jsp" />
-        <property name="exposeContextBeansAsAttributes" value="true"/>
+     <!--   <property name="exposeContextBeansAsAttributes" value="true"/> -->
     </bean>
 
 </beans>

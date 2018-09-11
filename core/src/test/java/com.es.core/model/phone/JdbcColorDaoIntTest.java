@@ -10,12 +10,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(locations = {"/context/applicationContext-core.xml", "/context/applicationContext-test.xml"})
 public class JdbcColorDaoIntTest {
-    @Autowired
+    @Resource
     JdbcColorDao jdbcColorDao;
 
     @Test

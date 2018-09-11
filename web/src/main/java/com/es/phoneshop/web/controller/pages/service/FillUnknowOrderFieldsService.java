@@ -6,6 +6,7 @@ import com.es.core.model.phone.Phone;
 import com.es.core.model.phone.PhoneDao;
 import com.es.core.order.DeliveryService;
 import org.springframework.stereotype.Service;
+import validation.order.OrderForm;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -36,5 +37,13 @@ public class FillUnknowOrderFieldsService {
         }
         order.setSubtotal(subTotal);
         order.setTotalPrice(subTotal.add(delivery));
+    }
+
+    public void fillOrderWithOrderForm(Order order, OrderForm orderForm){
+        order.setFirstName(orderForm.getFirstName());
+        order.setLastName(orderForm.getLastName());
+        order.setDeliveryAddress(orderForm.getAddress());
+        order.setContactPhoneNo(orderForm.getPhone());
+        order.setAdditionalInformation(orderForm.getAdditionalInformation());
     }
 }
