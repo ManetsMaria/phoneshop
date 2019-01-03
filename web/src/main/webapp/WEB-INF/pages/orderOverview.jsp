@@ -7,12 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Order overview</title>
-</head>
-<body>
-<c:import url="header.jsp"/>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<tag:page>
 <h2>Thank you for your order</h2>
 <h3>Order number: ${order.id}</h3>
 <c:import url="orderTable.jsp"/>
@@ -32,5 +28,4 @@
     ${order.additionalInformation}
 </p>
 <a href="${pageContext.request.contextPath}/productList" ><button>back to shopping</button></a>
-</body>
-</html>
+</tag:page>

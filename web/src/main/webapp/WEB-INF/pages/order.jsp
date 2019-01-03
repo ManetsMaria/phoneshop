@@ -9,12 +9,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Order</title>
-</head>
-<body>
-<c:import url="header.jsp"/>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<tag:page>
 <h2>Order</h2>
 <a href="${pageContext.request.contextPath}/cart" ><button>back to cart</button></a>
 <c:import url="orderTable.jsp"/>
@@ -22,26 +18,26 @@
 
    <div align="center"><form:errors path="outOfStock" cssClass="error" cssStyle="color: red"/></div>
     <p>
-       first name*: <form:input path="firstName"/>
+       first name*: <form:input path="firstName" cssClass="inputLeft"/>
         <form:errors path="firstName" cssClass="error" cssStyle="color: red"/>
     </p>
     <p>
-        last name*: <form:input path="lastName"/>
+        last name*: <form:input path="lastName" cssClass="inputLeft"/>
         <form:errors path="lastName" cssClass="error" cssStyle="color: red"/>
     </p>
     <p>
-        phone*: <form:input path="phone"/>
+        phone*: <form:input path="phone" cssClass="inputLeft"/>
         <form:errors path="phone" cssClass="error" cssStyle="color: red"/>
     </p>
     <p>
-        address*: <form:input path="address"/>
-        <form:errors path="address" cssClass="error" cssStyle="color: red"/>
+        address*: <form:input path="address" cssClass="inputLeft"/>
+        <form:errors path="address" cssClass="error" cssStyle="color: red" />
     </p>
     <p>
         additional information:
     </p>
     <p>
-        <form:input path="additionalInformation" style="width: 250px; height: 200px;"/>
+        <form:input path="additionalInformation" style="width: 250px; height: 200px;" cssClass="inputLeft"/>
     </p>
     <input type="submit" value="Order">
     <%-- <c:forEach var="orderItem" items="${order.orderItems}" varStatus="status">
@@ -56,5 +52,4 @@
         </c:forEach>
     </c:forEach> --%>
 </form:form>
-</body>
-</html>
+</tag:page>

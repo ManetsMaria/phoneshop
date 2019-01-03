@@ -7,12 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Admin</title>
-</head>
-<body>
-<c:import url="adminHeader.jsp"/>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<tag:page>
 <h2>Orders</h2>
     <table border="1px" align="center">
         <thead>
@@ -28,7 +24,7 @@
         <tbody>
         <c:forEach var="order" items="${orders}">
         <tr>
-            <td><a href="${pageContext.request.contextPath}/admin/orderOverview?orderId=${order.id}">${order.id}</a></td>
+            <td><a href="${pageContext.request.contextPath}/admin/orders/${order.id}">${order.id}</a></td>
             <td>${order.lastName.concat(" ").concat(order.firstName)}</td>
             <td>${order.contactPhoneNo}</td>
             <td>${order.deliveryAddress}"</td>
@@ -38,5 +34,4 @@
             </c:forEach>
         </tbody>
     </table>
-</body>
-</html>
+</tag:page>

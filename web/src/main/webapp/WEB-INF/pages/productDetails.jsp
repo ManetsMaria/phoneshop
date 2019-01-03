@@ -7,29 +7,8 @@
   Time: 10.57
   To change this template use File | Settings | File Templates.
 --%>
-<c:import url="header.jsp"/>
-<html>
-<head>
-    <title>Product Detail</title>
-    <style>
-        .sign {
-            margin-left: 0;
-        }
-        .sign figcaption {
-            width: 500px;
-            margin-left: 0;
-        }
-        table{
-            margin-bottom: 20px;
-            margin-top: 20px;
-        }
-        .layer1 {
-            float: left; /* Обтекание по правому краю */
-            height: 500px;
-        }
-    </style>
-</head>
-<body>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<tag:page>
 <a href="${pageContext.request.contextPath}/productList" ><button>return to product list</button></a>
 <h2>${phone.model}</h2>
 <div align="left" class="layer1">
@@ -39,11 +18,11 @@
     </figure>
     <b>Price: </b>${phone.price}
     <p><input type="text" id="quantity-form" width="10">
-    <input type="button" onclick="doAjax('quantity-form', ${phone.id}, 'error')" value="flagAdd to cart"> </p>
+    <input type="button" onclick="doAjax('quantity-form', ${phone.id}, 'error')" value="Add to cart"> </p>
     <input type="text" id="error" style="border:none" width="10" height="10">
 </div>
 <div align="center">
-<table>
+<table class="tableDetails">
     <caption><b>Display</b></caption>
     <tbody>
     <tr>
@@ -132,5 +111,4 @@
     </table>
 
 </div>
-</body>
-</html>
+</tag:page>

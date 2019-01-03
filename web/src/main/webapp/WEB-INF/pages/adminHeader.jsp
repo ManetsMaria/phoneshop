@@ -8,15 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <style>
-        h1 {
-            font-size: 200%;
-            border-bottom: 2px solid maroon;
-            font-weight: normal;
-            padding-bottom: 5px;
-        }
-    </style>
     <title>Phonify</title>
+    <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet" type="text/css">
 </head>
 <body>
 <p align="right">admin <a href="${pageContext.request.contextPath}/logout">Logout</a></p>

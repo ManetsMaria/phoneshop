@@ -9,49 +9,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <script src="<c:url value="/resources/js/func.js" />"></script>
+    <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet" type="text/css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <style>
-        h1 {
-            font-size: 200%;
-            border-bottom: 2px solid maroon;
-            font-weight: normal;
-            padding-bottom: 5px;
-        }
-    </style>
     <title>Phonify</title>
 </head>
 <body>
+<c:import url="/initCart"/>
 <p align="right"><a href="${pageContext.request.contextPath}/admin/orders">Login</a></p>
-<p align="right"><a href="${pageContext.request.contextPath}/cart" ><button>my cart: <span id="quantity">${quantity}</span> item <span id="summa">${cartService.cart.summa}</span> $</button></a>
+<p align="right"><a href="${pageContext.request.contextPath}/cart" ><button>my cart: <span id="quantity"><c:out value = "${cart.quantity}"/></span> item <span id="summa"><c:out value = "${cart.summa}"/></span> $</button></a>
 <h1>Phonify</h1>
 <p align="right"></p>
 </body>
-
-<script type="text/javascript">
-    function doAjax(idForm, id, idMistake) {
-        var inputText = document.getElementById(idForm).value;
-        document.getElementById(idMistake).value = '';
-        <!-- document.getElementById(idForm).value = ''; -->
-        $.ajax({
-            url : 'ajaxCart',
-            type: 'Post',
-            data : ({
-                phoneId: id,
-                quantity: inputText
-            }),
-
-            success: function(data) {
-                if (data.errorMessage === null){
-                    $('#quantity').html(data.quantity);
-                    $('#summa').html(data.summa);
-                }else{
-                    document.getElementById(idMistake).value = data.errorMessage;
-                }
-            },
-            error: function (data, e) {
-                <%-- document.getElementById(idMistake).value = 'empty input'; --%>
-            }
-        });
-    }
-</script>
 </html>

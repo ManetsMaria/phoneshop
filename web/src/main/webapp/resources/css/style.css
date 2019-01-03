@@ -1,0 +1,30 @@
+h1 {
+    font-size: 200%;
+    border-bottom: 2px solid maroon;
+    font-weight: normal;
+    padding-bottom: 5px;
+}
+table{
+    margin-top: 10px;
+}
+input {
+    text-align: right;
+}
+.sign {
+    margin-left: 0;
+}
+.sign figcaption {
+    width: 500px;
+    margin-left: 0;
+}
+.tableDetails{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.layer1 {
+    float: left;
+    height: 500px;
+}
+.inputLeft {
+    text-align: left;
+}

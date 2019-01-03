@@ -11,17 +11,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Cart</title>
-    <style>
-        input {
-            text-align: right;
-        }
-    </style>
-</head>
-<body>
-<c:import url="header.jsp"/>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<tag:page>
 <h2>Cart</h2>
 <a href="${pageContext.request.contextPath}/productList" ><button>return to product list</button></a>
 <div align="right"><a href="${pageContext.request.contextPath}/order"><button >Order</button></a></div>
@@ -58,25 +49,17 @@ ${updateSuccessfully}
                 <form:hidden path="cartFormItems[${status.index}].phoneId"/>
             </td>
             <td>
-                <button form="deleteForm" onclick="deleteCart(${phone.id})">Delete</button>
+                <button onclick="deleteCart(${phone.id}); return false;">Delete</button>
             </td>
             </c:forEach>
         </tbody>
     </table>
+            <div align="right">
+            <button>Update</button>
 </form:form>
-<div align="right">
-<button  onclick="updateCart()">Update</button>
+
     <a href="${pageContext.request.contextPath}/order"><button >Order</button></a></div>
 <form method="post" action="${pageContext.request.contextPath}/cart/delete" id="deleteForm" name="deleteForm">
     <input type="hidden" name="id" id="phoneId">
 </form>
-</body>
-<script>var updateCart = function() {
-    $('#cartForm').submit();
-};
-var deleteCart = function(id) {
-    document.getElementById('phoneId').value = id;
-    $('#deleteForm').submit();
-};
-</script>
-</html>
+</tag:page>

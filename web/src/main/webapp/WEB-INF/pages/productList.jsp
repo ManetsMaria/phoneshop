@@ -2,18 +2,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:import url="header.jsp"/>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<tag:page>
 <jsp:useBean id="converter" class="com.es.phoneshop.web.controller.pages.service.SpecificationConverterService" />
-
+<link href="<c:url value="/resources/css/style.css" />" rel="stylesheet" type="text/css">
 <h2>Phones</h2>
-<style>
-    table{
-        margin-top: 10px;
-    }
-    input {
-        text-align: right;
-    }
-</style>
 <div align="right" >
     <form action="?" method="get" >
         <input type="text" name="search" value="${search}">
@@ -65,3 +58,4 @@
     ${currentPage}/${pageCount}
     <a href="?page=${currentPage + 1}"><input type="button" <c:if test="${currentPage == pageCount}"><c:out value="disabled='disabled'"/></c:if> value="next"></a>
 </div>
+</tag:page>

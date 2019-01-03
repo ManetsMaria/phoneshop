@@ -4,6 +4,7 @@ import com.es.core.cart.CartService;
 import com.es.core.model.order.Order;
 import com.es.core.order.OrderService;
 import com.es.core.order.OutOfStockException;
+import com.es.phoneshop.web.controller.pages.service.ConvertIdService;
 import com.es.phoneshop.web.controller.pages.service.FillUnknowOrderFieldsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,8 @@ public class OrderPageController {
     private CartService cartService;
     @Resource
     private FillUnknowOrderFieldsService fillUnknowOrderFieldsService;
+    @Resource
+    private ConvertIdService convertIdService;
 
     private final String ORDER_FORM = "orderForm";
     private final String ORDER = "order";
@@ -57,9 +60,7 @@ public class OrderPageController {
         try {
             orderService.placeOrder(order);
             cartService.removeAll();
-            //redirectAttributes.addFlashAttribute(ORDER_FORM, orderForm);
-            redirectAttributes.addFlashAttribute(ORDER, order);
-            return "redirect:/orderOverview";
+            return "redirect:/order/"+convertIdService.getSecretByReal(order.getId());
         } catch (OutOfStockException e) {
             bindingResult.rejectValue("outOfStock", "outOfStock");
             return ORDER;

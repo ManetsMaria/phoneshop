@@ -15,9 +15,9 @@ public class InitController {
     @Resource
     private CartService cartService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/header")
+    @RequestMapping(method = RequestMethod.GET, value = "/initCart")
     public String initCart(Model model){
         model.addAttribute("cartService", cartService);
-        return "header";
+        return "initCart";
     }
 }

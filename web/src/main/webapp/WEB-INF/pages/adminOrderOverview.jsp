@@ -7,12 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Order overview</title>
-</head>
-<body>
-<c:import url="adminHeader.jsp"/>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<tag:page>
 <h2>order status: ${order.status}</h2>
 <h3>Order number: ${order.id}</h3>
 <c:import url="orderTable.jsp"/>
@@ -32,7 +28,6 @@
     ${order.additionalInformation}
 </p>
 <a href="${pageContext.request.contextPath}/admin/orders" ><button>back</button></a>
-<a href="${pageContext.request.contextPath}/admin/orderOverview?orderId=${order.id}&orderStatus=DELIVERED"><button>Delivered</button></a>
-<a href="${pageContext.request.contextPath}/admin/orderOverview?orderId=${order.id}&orderStatus=REJECTED"><button>Rejected</button></a>
-</body>
-</html>
+<a href="${pageContext.request.contextPath}/admin/orders/${order.id}?orderStatus=DELIVERED"><button>Delivered</button></a>
+<a href="${pageContext.request.contextPath}/admin/orders/${order.id}?orderStatus=REJECTED"><button>Rejected</button></a>
+</tag:page>
